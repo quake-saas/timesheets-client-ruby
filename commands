@@ -1,0 +1,10 @@
+require 'quake_timesheets_client'
+
+config = Quake::Timesheets::Configuration.new
+config.api_key['authToken'] = 'supersecretkey'
+client = Quake::Timesheets::ApiClient.new(config)
+api_instance = Quake::Timesheets::ApprovalTypesApi.new(client)
+result = api_instance.get_api_v1_approval_types(dataset_id: '05033a75-de02-4689-9c55-04b575d33b2c')
+
+result.first.name == 'my approval'
+result.first.weight == 2.0

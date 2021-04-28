@@ -1,0 +1,10 @@
+=begin
+{{> api_info}}
+=end
+
+# Pre-define base modules
+'{{moduleName}}'.split('::').reduce(Object) { |previous, mod| previous.const_set(mod.to_sym, Module.new) }
+
+module {{moduleName}}
+  VERSION = '{{gemVersion}}'
+end

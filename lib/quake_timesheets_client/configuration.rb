@@ -133,6 +133,10 @@ module Quake::Timesheets
 
     attr_accessor :force_ending_format
 
+    attr_accessor :server_settings
+
+    attr_accessor :user_agent
+
     def initialize
       @scheme = 'https'
       @host = 'timesheetsapi.svc.lumbry.co.uk'
@@ -155,6 +159,8 @@ module Quake::Timesheets
       @inject_format = false
       @force_ending_format = false
       @logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
+      @server_settings = default_server_settings
+      @user_agent = "OpenAPI-Generator/#{VERSION}/ruby"
 
       timesheets_initialize
 
@@ -170,7 +176,12 @@ module Quake::Timesheets
     # schemes                         #
     ###################################
     def timesheets_initialize
-      @api_key_prefix = { 'authToken': 'Bearer' }
+      @api_key_prefix['authToken'] = 'Bearer'
+      @user_agent = "quake/timesheets-client/ruby/#{VERSION}"
+    end
+
+    def endpoint=(value)
+      @server_settings = [{ url: value }]
     end
     ###################################
     # end of overrides                #
@@ -240,7 +251,7 @@ module Quake::Timesheets
     end
 
     # Returns an array of Server setting
-    def server_settings
+    def default_server_settings
       [
         {
           url: "https://timesheetsapi.svc.lumbry.co.uk:443",

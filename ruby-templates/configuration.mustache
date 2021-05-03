@@ -101,6 +101,10 @@ module {{moduleName}}
 
     attr_accessor :force_ending_format
 
+    attr_accessor :server_settings
+
+    attr_accessor :user_agent
+
     def initialize
       @scheme = '{{scheme}}'
       @host = '{{host}}{{#port}}:{{{.}}}{{/port}}'
@@ -132,6 +136,8 @@ module {{moduleName}}
       @inject_format = false
       @force_ending_format = false
       @logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
+      @server_settings = default_server_settings
+      @user_agent = "{{#httpUserAgent}}{{{.}}}{{/httpUserAgent}}{{^httpUserAgent}}OpenAPI-Generator/#{VERSION}/ruby{{/httpUserAgent}}"
 
       timesheets_initialize
 
@@ -147,7 +153,12 @@ module {{moduleName}}
     # schemes                         #
     ###################################
     def timesheets_initialize
-      @api_key_prefix = { 'authToken': 'Bearer' }
+      @api_key_prefix['authToken'] = 'Bearer'
+      @user_agent = "quake/timesheets-client/ruby/#{VERSION}"
+    end
+
+    def endpoint=(value)
+      @server_settings = [{ url: value }]
     end
     ###################################
     # end of overrides                #
@@ -253,7 +264,7 @@ module {{moduleName}}
     end
 
     # Returns an array of Server setting
-    def server_settings
+    def default_server_settings
       [
       {{#servers}}
         {

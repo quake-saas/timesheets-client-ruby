@@ -11,7 +11,13 @@ OpenAPI Generator version: 5.1.0
 =end
 
 # Pre-define base modules
-'Quake::Timesheets'.split('::').reduce(Object) { |previous, mod| previous.const_set(mod.to_sym, Module.new) }
+'Quake::Timesheets'.split('::').reduce(Object) do |previous, mod|
+  if previous.const_defined?(mod.to_sym)
+    previous.const_get(mod.to_sym)
+  else
+    previous.const_set(mod.to_sym, Module.new)
+  end
+end
 
 module Quake::Timesheets
   VERSION = '0.1.0'

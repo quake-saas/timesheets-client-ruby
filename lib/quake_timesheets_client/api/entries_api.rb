@@ -53,7 +53,7 @@ module Quake::Timesheets
       form_params = opts[:form_params] || {}
 
       # http body (model)
-      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'create_entries_input'])
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'create_entries_input'] || opts[:body])
 
       # return_type
       return_type = opts[:debug_return_type] || 'Entry'
@@ -185,7 +185,7 @@ module Quake::Timesheets
       form_params = opts[:form_params] || {}
 
       # http body (model)
-      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'update_entries_input'])
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'update_entries_input'] || opts[:body])
 
       # return_type
       return_type = opts[:debug_return_type] || 'Entry'

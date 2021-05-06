@@ -47,10 +47,4 @@ lib/quake_timesheets_client/version.rb
 quake_timesheets_client.gemspec
 spec/api_client_spec.rb
 spec/configuration_spec.rb
-spec/models/create_approval_types_input_spec.rb
-spec/models/create_approvals_input_spec.rb
-spec/models/create_datasets_input_spec.rb
-spec/models/create_entries_input_spec.rb
-spec/models/create_people_input_spec.rb
-spec/models/update_entries_input_spec.rb
 spec/spec_helper.rb

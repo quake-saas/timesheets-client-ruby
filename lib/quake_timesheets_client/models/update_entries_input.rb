@@ -14,22 +14,54 @@ require 'date'
 require 'time'
 
 module Quake::Timesheets
-  class Person
-    # The ID of the person
-    attr_accessor :id
+  class UpdateEntriesInput
+    # ID of the person to which this entry pertains
+    attr_accessor :person_id
 
-    # ID of the dataset this person is linked to
-    attr_accessor :dataset_id
+    # Time period at which this entry starts
+    attr_accessor :start_at
 
-    # The name of the person
-    attr_accessor :name
+    # Time period at which this entry ends
+    attr_accessor :end_at
+
+    attr_accessor :quantity
+
+    attr_accessor :unit
+
+    # Unique identifier of the activity this Entry relates to
+    attr_accessor :external_reference
+
+    class EnumAttributeValidator
+      attr_reader :datatype
+      attr_reader :allowable_values
+
+      def initialize(datatype, allowable_values)
+        @allowable_values = allowable_values.map do |value|
+          case datatype.to_s
+          when /Integer/i
+            value.to_i
+          when /Float/i
+            value.to_f
+          else
+            value
+          end
+        end
+      end
+
+      def valid?(value)
+        !value || allowable_values.include?(value)
+      end
+    end
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'id' => :'id',
-        :'dataset_id' => :'dataset_id',
-        :'name' => :'name'
+        :'person_id' => :'person_id',
+        :'start_at' => :'start_at',
+        :'end_at' => :'end_at',
+        :'quantity' => :'quantity',
+        :'unit' => :'unit',
+        :'external_reference' => :'external_reference'
       }
     end
 
@@ -41,9 +73,12 @@ module Quake::Timesheets
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'id' => :'String',
-        :'dataset_id' => :'String',
-        :'name' => :'String'
+        :'person_id' => :'String',
+        :'start_at' => :'String',
+        :'end_at' => :'String',
+        :'quantity' => :'Float',
+        :'unit' => :'String',
+        :'external_reference' => :'String'
       }
     end
 
@@ -57,27 +92,39 @@ module Quake::Timesheets
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Quake::Timesheets::Person` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Quake::Timesheets::UpdateEntriesInput` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Quake::Timesheets::Person`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Quake::Timesheets::UpdateEntriesInput`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'id')
-        self.id = attributes[:'id']
+      if attributes.key?(:'person_id')
+        self.person_id = attributes[:'person_id']
       end
 
-      if attributes.key?(:'dataset_id')
-        self.dataset_id = attributes[:'dataset_id']
+      if attributes.key?(:'start_at')
+        self.start_at = attributes[:'start_at']
       end
 
-      if attributes.key?(:'name')
-        self.name = attributes[:'name']
+      if attributes.key?(:'end_at')
+        self.end_at = attributes[:'end_at']
+      end
+
+      if attributes.key?(:'quantity')
+        self.quantity = attributes[:'quantity']
+      end
+
+      if attributes.key?(:'unit')
+        self.unit = attributes[:'unit']
+      end
+
+      if attributes.key?(:'external_reference')
+        self.external_reference = attributes[:'external_reference']
       end
     end
 
@@ -85,28 +132,25 @@ module Quake::Timesheets
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @id.nil?
-        invalid_properties.push('invalid value for "id", id cannot be nil.')
-      end
-
-      if @dataset_id.nil?
-        invalid_properties.push('invalid value for "dataset_id", dataset_id cannot be nil.')
-      end
-
-      if @name.nil?
-        invalid_properties.push('invalid value for "name", name cannot be nil.')
-      end
-
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @id.nil?
-      return false if @dataset_id.nil?
-      return false if @name.nil?
+      unit_validator = EnumAttributeValidator.new('String', ["hour", "day", "week", "month", "other"])
+      return false unless unit_validator.valid?(@unit)
       true
+    end
+
+    # Custom attribute writer method checking allowed values (enum).
+    # @param [Object] unit Object to be assigned
+    def unit=(unit)
+      validator = EnumAttributeValidator.new('String', ["hour", "day", "week", "month", "other"])
+      unless validator.valid?(unit)
+        fail ArgumentError, "invalid value for \"unit\", must be one of #{validator.allowable_values}."
+      end
+      @unit = unit
     end
 
     # Checks equality by comparing each attribute.
@@ -114,9 +158,12 @@ module Quake::Timesheets
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          id == o.id &&
-          dataset_id == o.dataset_id &&
-          name == o.name
+          person_id == o.person_id &&
+          start_at == o.start_at &&
+          end_at == o.end_at &&
+          quantity == o.quantity &&
+          unit == o.unit &&
+          external_reference == o.external_reference
     end
 
     # @see the `==` method
@@ -128,7 +175,7 @@ module Quake::Timesheets
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, dataset_id, name].hash
+      [person_id, start_at, end_at, quantity, unit, external_reference].hash
     end
 
     # Builds the object from hash

@@ -1,5 +1,5 @@
 =begin
-#TimesheetsApi (params in:formData)
+#TimesheetsApi (params in:body)
 
 # <p>Another API description</p> 
 

@@ -1,5 +1,5 @@
 =begin
-#TimesheetsApi (params in:formData)
+#TimesheetsApi (params in:body)
 
 # <p>Another API description</p> 
 
@@ -19,12 +19,71 @@ module Quake::Timesheets
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
     end
+    # Create a new Person record
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreatePeopleInput] :create_people_input 
+    # @return [Person]
+    def create_people(opts = {})
+      data, _status_code, _headers = create_people_with_http_info(opts)
+      data
+    end
+
+    # Create a new Person record
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreatePeopleInput] :create_people_input 
+    # @return [Array<(Person, Integer, Hash)>] Person data, response status code and response headers
+    def create_people_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: PeopleApi.create_people ...'
+      end
+      # resource path
+      local_var_path = '/api/v1/people'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
+      # HTTP header 'Content-Type'
+      header_params['Content-Type'] = @api_client.select_header_content_type(['application/json'])
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'create_people_input'])
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'Person'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['authToken']
+
+      new_options = opts.merge(
+        :operation => :"PeopleApi.create_people",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: PeopleApi#create_people\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Search for people matching filters
     # @param [Hash] opts the optional parameters
     # @option opts [String] :dataset_id Filter to the people belonging to one of the identified datasets
     # @return [Array<Person>]
-    def get_api_v1_people(opts = {})
-      data, _status_code, _headers = get_api_v1_people_with_http_info(opts)
+    def index_people(opts = {})
+      data, _status_code, _headers = index_people_with_http_info(opts)
       data
     end
 
@@ -32,9 +91,9 @@ module Quake::Timesheets
     # @param [Hash] opts the optional parameters
     # @option opts [String] :dataset_id Filter to the people belonging to one of the identified datasets
     # @return [Array<(Array<Person>, Integer, Hash)>] Array<Person> data, response status code and response headers
-    def get_api_v1_people_with_http_info(opts = {})
+    def index_people_with_http_info(opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: PeopleApi.get_api_v1_people ...'
+        @api_client.config.logger.debug 'Calling API: PeopleApi.index_people ...'
       end
       # resource path
       local_var_path = '/api/v1/people'
@@ -61,7 +120,7 @@ module Quake::Timesheets
       auth_names = opts[:debug_auth_names] || ['authToken']
 
       new_options = opts.merge(
-        :operation => :"PeopleApi.get_api_v1_people",
+        :operation => :"PeopleApi.index_people",
         :header_params => header_params,
         :query_params => query_params,
         :form_params => form_params,
@@ -72,78 +131,7 @@ module Quake::Timesheets
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: PeopleApi#get_api_v1_people\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
-      return data, status_code, headers
-    end
-
-    # Create a new Person record
-    # @param name [String] Human readable name for the Person object (usually the subject&#39;s real name)
-    # @param dataset_id [String] Dataset to which the Person object should belong
-    # @param [Hash] opts the optional parameters
-    # @return [Person]
-    def post_api_v1_people(name, dataset_id, opts = {})
-      data, _status_code, _headers = post_api_v1_people_with_http_info(name, dataset_id, opts)
-      data
-    end
-
-    # Create a new Person record
-    # @param name [String] Human readable name for the Person object (usually the subject&#39;s real name)
-    # @param dataset_id [String] Dataset to which the Person object should belong
-    # @param [Hash] opts the optional parameters
-    # @return [Array<(Person, Integer, Hash)>] Person data, response status code and response headers
-    def post_api_v1_people_with_http_info(name, dataset_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: PeopleApi.post_api_v1_people ...'
-      end
-      # verify the required parameter 'name' is set
-      if @api_client.config.client_side_validation && name.nil?
-        fail ArgumentError, "Missing the required parameter 'name' when calling PeopleApi.post_api_v1_people"
-      end
-      # verify the required parameter 'dataset_id' is set
-      if @api_client.config.client_side_validation && dataset_id.nil?
-        fail ArgumentError, "Missing the required parameter 'dataset_id' when calling PeopleApi.post_api_v1_people"
-      end
-      # resource path
-      local_var_path = '/api/v1/people'
-
-      # query parameters
-      query_params = opts[:query_params] || {}
-
-      # header parameters
-      header_params = opts[:header_params] || {}
-      # HTTP header 'Accept' (if needed)
-      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
-      # HTTP header 'Content-Type'
-      header_params['Content-Type'] = @api_client.select_header_content_type(['application/x-www-form-urlencoded', 'multipart/form-data'])
-
-      # form parameters
-      form_params = opts[:form_params] || {}
-      form_params['name'] = name
-      form_params['dataset_id'] = dataset_id
-
-      # http body (model)
-      post_body = opts[:debug_body]
-
-      # return_type
-      return_type = opts[:debug_return_type] || 'Person'
-
-      # auth_names
-      auth_names = opts[:debug_auth_names] || ['authToken']
-
-      new_options = opts.merge(
-        :operation => :"PeopleApi.post_api_v1_people",
-        :header_params => header_params,
-        :query_params => query_params,
-        :form_params => form_params,
-        :body => post_body,
-        :auth_names => auth_names,
-        :return_type => return_type
-      )
-
-      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: PeopleApi#post_api_v1_people\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: PeopleApi#index_people\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

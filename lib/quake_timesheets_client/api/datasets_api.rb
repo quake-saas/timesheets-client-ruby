@@ -1,5 +1,5 @@
 =begin
-#TimesheetsApi (params in:formData)
+#TimesheetsApi (params in:body)
 
 # <p>Another API description</p> 
 
@@ -19,20 +19,79 @@ module Quake::Timesheets
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
     end
+    # Create a new Dataset record
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreateDatasetsInput] :create_datasets_input 
+    # @return [Dataset]
+    def create_datasets(opts = {})
+      data, _status_code, _headers = create_datasets_with_http_info(opts)
+      data
+    end
+
+    # Create a new Dataset record
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreateDatasetsInput] :create_datasets_input 
+    # @return [Array<(Dataset, Integer, Hash)>] Dataset data, response status code and response headers
+    def create_datasets_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: DatasetsApi.create_datasets ...'
+      end
+      # resource path
+      local_var_path = '/api/v1/datasets'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
+      # HTTP header 'Content-Type'
+      header_params['Content-Type'] = @api_client.select_header_content_type(['application/json'])
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'create_datasets_input'])
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'Dataset'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['authToken']
+
+      new_options = opts.merge(
+        :operation => :"DatasetsApi.create_datasets",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: DatasetsApi#create_datasets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # List all available datasets
     # @param [Hash] opts the optional parameters
     # @return [Array<Dataset>]
-    def get_api_v1_datasets(opts = {})
-      data, _status_code, _headers = get_api_v1_datasets_with_http_info(opts)
+    def index_datasets(opts = {})
+      data, _status_code, _headers = index_datasets_with_http_info(opts)
       data
     end
 
     # List all available datasets
     # @param [Hash] opts the optional parameters
     # @return [Array<(Array<Dataset>, Integer, Hash)>] Array<Dataset> data, response status code and response headers
-    def get_api_v1_datasets_with_http_info(opts = {})
+    def index_datasets_with_http_info(opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: DatasetsApi.get_api_v1_datasets ...'
+        @api_client.config.logger.debug 'Calling API: DatasetsApi.index_datasets ...'
       end
       # resource path
       local_var_path = '/api/v1/datasets'
@@ -58,7 +117,7 @@ module Quake::Timesheets
       auth_names = opts[:debug_auth_names] || ['authToken']
 
       new_options = opts.merge(
-        :operation => :"DatasetsApi.get_api_v1_datasets",
+        :operation => :"DatasetsApi.index_datasets",
         :header_params => header_params,
         :query_params => query_params,
         :form_params => form_params,
@@ -69,7 +128,7 @@ module Quake::Timesheets
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: DatasetsApi#get_api_v1_datasets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: DatasetsApi#index_datasets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
@@ -78,8 +137,8 @@ module Quake::Timesheets
     # @param id [String] ID of the dataset
     # @param [Hash] opts the optional parameters
     # @return [Dataset]
-    def get_api_v1_datasets_id(id, opts = {})
-      data, _status_code, _headers = get_api_v1_datasets_id_with_http_info(id, opts)
+    def show_datasets(id, opts = {})
+      data, _status_code, _headers = show_datasets_with_http_info(id, opts)
       data
     end
 
@@ -87,13 +146,13 @@ module Quake::Timesheets
     # @param id [String] ID of the dataset
     # @param [Hash] opts the optional parameters
     # @return [Array<(Dataset, Integer, Hash)>] Dataset data, response status code and response headers
-    def get_api_v1_datasets_id_with_http_info(id, opts = {})
+    def show_datasets_with_http_info(id, opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: DatasetsApi.get_api_v1_datasets_id ...'
+        @api_client.config.logger.debug 'Calling API: DatasetsApi.show_datasets ...'
       end
       # verify the required parameter 'id' is set
       if @api_client.config.client_side_validation && id.nil?
-        fail ArgumentError, "Missing the required parameter 'id' when calling DatasetsApi.get_api_v1_datasets_id"
+        fail ArgumentError, "Missing the required parameter 'id' when calling DatasetsApi.show_datasets"
       end
       # resource path
       local_var_path = '/api/v1/datasets/{id}'.sub('{' + 'id' + '}', CGI.escape(id.to_s))
@@ -119,7 +178,7 @@ module Quake::Timesheets
       auth_names = opts[:debug_auth_names] || ['authToken']
 
       new_options = opts.merge(
-        :operation => :"DatasetsApi.get_api_v1_datasets_id",
+        :operation => :"DatasetsApi.show_datasets",
         :header_params => header_params,
         :query_params => query_params,
         :form_params => form_params,
@@ -130,71 +189,7 @@ module Quake::Timesheets
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: DatasetsApi#get_api_v1_datasets_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
-      return data, status_code, headers
-    end
-
-    # Create a new Dataset record
-    # @param name [String] Name for the Dataset object
-    # @param [Hash] opts the optional parameters
-    # @return [Dataset]
-    def post_api_v1_datasets(name, opts = {})
-      data, _status_code, _headers = post_api_v1_datasets_with_http_info(name, opts)
-      data
-    end
-
-    # Create a new Dataset record
-    # @param name [String] Name for the Dataset object
-    # @param [Hash] opts the optional parameters
-    # @return [Array<(Dataset, Integer, Hash)>] Dataset data, response status code and response headers
-    def post_api_v1_datasets_with_http_info(name, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: DatasetsApi.post_api_v1_datasets ...'
-      end
-      # verify the required parameter 'name' is set
-      if @api_client.config.client_side_validation && name.nil?
-        fail ArgumentError, "Missing the required parameter 'name' when calling DatasetsApi.post_api_v1_datasets"
-      end
-      # resource path
-      local_var_path = '/api/v1/datasets'
-
-      # query parameters
-      query_params = opts[:query_params] || {}
-
-      # header parameters
-      header_params = opts[:header_params] || {}
-      # HTTP header 'Accept' (if needed)
-      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
-      # HTTP header 'Content-Type'
-      header_params['Content-Type'] = @api_client.select_header_content_type(['application/x-www-form-urlencoded', 'multipart/form-data'])
-
-      # form parameters
-      form_params = opts[:form_params] || {}
-      form_params['name'] = name
-
-      # http body (model)
-      post_body = opts[:debug_body]
-
-      # return_type
-      return_type = opts[:debug_return_type] || 'Dataset'
-
-      # auth_names
-      auth_names = opts[:debug_auth_names] || ['authToken']
-
-      new_options = opts.merge(
-        :operation => :"DatasetsApi.post_api_v1_datasets",
-        :header_params => header_params,
-        :query_params => query_params,
-        :form_params => form_params,
-        :body => post_body,
-        :auth_names => auth_names,
-        :return_type => return_type
-      )
-
-      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: DatasetsApi#post_api_v1_datasets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: DatasetsApi#show_datasets\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

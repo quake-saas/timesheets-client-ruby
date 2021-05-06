@@ -1,5 +1,5 @@
 =begin
-#TimesheetsApi (params in:formData)
+#TimesheetsApi (params in:body)
 
 # <p>Another API description</p> 
 
@@ -28,9 +28,15 @@ require 'quake_timesheets_client/configuration'
 # Models
 require 'quake_timesheets_client/models/approval'
 require 'quake_timesheets_client/models/approval_type'
+require 'quake_timesheets_client/models/create_approval_types_input'
+require 'quake_timesheets_client/models/create_approvals_input'
+require 'quake_timesheets_client/models/create_datasets_input'
+require 'quake_timesheets_client/models/create_entries_input'
+require 'quake_timesheets_client/models/create_people_input'
 require 'quake_timesheets_client/models/dataset'
 require 'quake_timesheets_client/models/entry'
 require 'quake_timesheets_client/models/person'
+require 'quake_timesheets_client/models/update_entries_input'
 
 # APIs
 require 'quake_timesheets_client/api/approval_types_api'

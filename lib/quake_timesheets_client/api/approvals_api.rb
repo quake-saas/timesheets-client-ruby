@@ -1,5 +1,5 @@
 =begin
-#TimesheetsApi (params in:formData)
+#TimesheetsApi (params in:body)
 
 # <p>Another API description</p> 
 
@@ -19,12 +19,71 @@ module Quake::Timesheets
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
     end
+    # Create a new Approval
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreateApprovalsInput] :create_approvals_input 
+    # @return [Approval]
+    def create_approvals(opts = {})
+      data, _status_code, _headers = create_approvals_with_http_info(opts)
+      data
+    end
+
+    # Create a new Approval
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreateApprovalsInput] :create_approvals_input 
+    # @return [Array<(Approval, Integer, Hash)>] Approval data, response status code and response headers
+    def create_approvals_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: ApprovalsApi.create_approvals ...'
+      end
+      # resource path
+      local_var_path = '/api/v1/approvals'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
+      # HTTP header 'Content-Type'
+      header_params['Content-Type'] = @api_client.select_header_content_type(['application/json'])
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'create_approvals_input'])
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'Approval'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['authToken']
+
+      new_options = opts.merge(
+        :operation => :"ApprovalsApi.create_approvals",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: ApprovalsApi#create_approvals\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Search for approval types matching filters
     # @param dataset_id [String] Filter to the approvals belonging to one of the identified datasets
     # @param [Hash] opts the optional parameters
     # @return [Array<Approval>]
-    def get_api_v1_approvals(dataset_id, opts = {})
-      data, _status_code, _headers = get_api_v1_approvals_with_http_info(dataset_id, opts)
+    def index_approvals(dataset_id, opts = {})
+      data, _status_code, _headers = index_approvals_with_http_info(dataset_id, opts)
       data
     end
 
@@ -32,13 +91,13 @@ module Quake::Timesheets
     # @param dataset_id [String] Filter to the approvals belonging to one of the identified datasets
     # @param [Hash] opts the optional parameters
     # @return [Array<(Array<Approval>, Integer, Hash)>] Array<Approval> data, response status code and response headers
-    def get_api_v1_approvals_with_http_info(dataset_id, opts = {})
+    def index_approvals_with_http_info(dataset_id, opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: ApprovalsApi.get_api_v1_approvals ...'
+        @api_client.config.logger.debug 'Calling API: ApprovalsApi.index_approvals ...'
       end
       # verify the required parameter 'dataset_id' is set
       if @api_client.config.client_side_validation && dataset_id.nil?
-        fail ArgumentError, "Missing the required parameter 'dataset_id' when calling ApprovalsApi.get_api_v1_approvals"
+        fail ArgumentError, "Missing the required parameter 'dataset_id' when calling ApprovalsApi.index_approvals"
       end
       # resource path
       local_var_path = '/api/v1/approvals'
@@ -65,7 +124,7 @@ module Quake::Timesheets
       auth_names = opts[:debug_auth_names] || ['authToken']
 
       new_options = opts.merge(
-        :operation => :"ApprovalsApi.get_api_v1_approvals",
+        :operation => :"ApprovalsApi.index_approvals",
         :header_params => header_params,
         :query_params => query_params,
         :form_params => form_params,
@@ -76,97 +135,7 @@ module Quake::Timesheets
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: ApprovalsApi#get_api_v1_approvals\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
-      return data, status_code, headers
-    end
-
-    # Create a new Approval
-    # @param state [String] 
-    # @param approval_type_id [String] The ID of the Approval Type of this Approval
-    # @param entry_ids [Array<String>] The ID of the Entry this Approval is linked to
-    # @param dataset_id [String] ID of the dataset this approval type is linked to
-    # @param [Hash] opts the optional parameters
-    # @return [Approval]
-    def post_api_v1_approvals(state, approval_type_id, entry_ids, dataset_id, opts = {})
-      data, _status_code, _headers = post_api_v1_approvals_with_http_info(state, approval_type_id, entry_ids, dataset_id, opts)
-      data
-    end
-
-    # Create a new Approval
-    # @param state [String] 
-    # @param approval_type_id [String] The ID of the Approval Type of this Approval
-    # @param entry_ids [Array<String>] The ID of the Entry this Approval is linked to
-    # @param dataset_id [String] ID of the dataset this approval type is linked to
-    # @param [Hash] opts the optional parameters
-    # @return [Array<(Approval, Integer, Hash)>] Approval data, response status code and response headers
-    def post_api_v1_approvals_with_http_info(state, approval_type_id, entry_ids, dataset_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: ApprovalsApi.post_api_v1_approvals ...'
-      end
-      # verify the required parameter 'state' is set
-      if @api_client.config.client_side_validation && state.nil?
-        fail ArgumentError, "Missing the required parameter 'state' when calling ApprovalsApi.post_api_v1_approvals"
-      end
-      # verify enum value
-      allowable_values = ["requested", "approved", "withdrawn"]
-      if @api_client.config.client_side_validation && !allowable_values.include?(state)
-        fail ArgumentError, "invalid value for \"state\", must be one of #{allowable_values}"
-      end
-      # verify the required parameter 'approval_type_id' is set
-      if @api_client.config.client_side_validation && approval_type_id.nil?
-        fail ArgumentError, "Missing the required parameter 'approval_type_id' when calling ApprovalsApi.post_api_v1_approvals"
-      end
-      # verify the required parameter 'entry_ids' is set
-      if @api_client.config.client_side_validation && entry_ids.nil?
-        fail ArgumentError, "Missing the required parameter 'entry_ids' when calling ApprovalsApi.post_api_v1_approvals"
-      end
-      # verify the required parameter 'dataset_id' is set
-      if @api_client.config.client_side_validation && dataset_id.nil?
-        fail ArgumentError, "Missing the required parameter 'dataset_id' when calling ApprovalsApi.post_api_v1_approvals"
-      end
-      # resource path
-      local_var_path = '/api/v1/approvals'
-
-      # query parameters
-      query_params = opts[:query_params] || {}
-
-      # header parameters
-      header_params = opts[:header_params] || {}
-      # HTTP header 'Accept' (if needed)
-      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
-      # HTTP header 'Content-Type'
-      header_params['Content-Type'] = @api_client.select_header_content_type(['application/x-www-form-urlencoded', 'multipart/form-data'])
-
-      # form parameters
-      form_params = opts[:form_params] || {}
-      form_params['state'] = state
-      form_params['approval_type_id'] = approval_type_id
-      form_params['entry_ids'] = @api_client.build_collection_param(entry_ids, :csv)
-      form_params['dataset_id'] = dataset_id
-
-      # http body (model)
-      post_body = opts[:debug_body]
-
-      # return_type
-      return_type = opts[:debug_return_type] || 'Approval'
-
-      # auth_names
-      auth_names = opts[:debug_auth_names] || ['authToken']
-
-      new_options = opts.merge(
-        :operation => :"ApprovalsApi.post_api_v1_approvals",
-        :header_params => header_params,
-        :query_params => query_params,
-        :form_params => form_params,
-        :body => post_body,
-        :auth_names => auth_names,
-        :return_type => return_type
-      )
-
-      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: ApprovalsApi#post_api_v1_approvals\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: ApprovalsApi#index_approvals\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

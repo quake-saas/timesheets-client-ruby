@@ -1,5 +1,5 @@
 =begin
-#TimesheetsApi (params in:formData)
+#TimesheetsApi (params in:body)
 
 # <p>Another API description</p> 
 
@@ -19,12 +19,71 @@ module Quake::Timesheets
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
     end
+    # Create a new Approval Type
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreateApprovalTypesInput] :create_approval_types_input 
+    # @return [ApprovalType]
+    def create_approval_types(opts = {})
+      data, _status_code, _headers = create_approval_types_with_http_info(opts)
+      data
+    end
+
+    # Create a new Approval Type
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreateApprovalTypesInput] :create_approval_types_input 
+    # @return [Array<(ApprovalType, Integer, Hash)>] ApprovalType data, response status code and response headers
+    def create_approval_types_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: ApprovalTypesApi.create_approval_types ...'
+      end
+      # resource path
+      local_var_path = '/api/v1/approval_types'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
+      # HTTP header 'Content-Type'
+      header_params['Content-Type'] = @api_client.select_header_content_type(['application/json'])
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'create_approval_types_input'])
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'ApprovalType'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['authToken']
+
+      new_options = opts.merge(
+        :operation => :"ApprovalTypesApi.create_approval_types",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: ApprovalTypesApi#create_approval_types\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Search for approval types matching filters
     # @param [Hash] opts the optional parameters
     # @option opts [String] :dataset_id Filter to the approval types belonging to one of the identified datasets
     # @return [Array<ApprovalType>]
-    def get_api_v1_approval_types(opts = {})
-      data, _status_code, _headers = get_api_v1_approval_types_with_http_info(opts)
+    def index_approval_types(opts = {})
+      data, _status_code, _headers = index_approval_types_with_http_info(opts)
       data
     end
 
@@ -32,9 +91,9 @@ module Quake::Timesheets
     # @param [Hash] opts the optional parameters
     # @option opts [String] :dataset_id Filter to the approval types belonging to one of the identified datasets
     # @return [Array<(Array<ApprovalType>, Integer, Hash)>] Array<ApprovalType> data, response status code and response headers
-    def get_api_v1_approval_types_with_http_info(opts = {})
+    def index_approval_types_with_http_info(opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: ApprovalTypesApi.get_api_v1_approval_types ...'
+        @api_client.config.logger.debug 'Calling API: ApprovalTypesApi.index_approval_types ...'
       end
       # resource path
       local_var_path = '/api/v1/approval_types'
@@ -61,7 +120,7 @@ module Quake::Timesheets
       auth_names = opts[:debug_auth_names] || ['authToken']
 
       new_options = opts.merge(
-        :operation => :"ApprovalTypesApi.get_api_v1_approval_types",
+        :operation => :"ApprovalTypesApi.index_approval_types",
         :header_params => header_params,
         :query_params => query_params,
         :form_params => form_params,
@@ -72,85 +131,7 @@ module Quake::Timesheets
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: ApprovalTypesApi#get_api_v1_approval_types\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
-      return data, status_code, headers
-    end
-
-    # Create a new Approval Type
-    # @param weight [Float] The weight provided by approvals of this type
-    # @param name [String] The name of the approval type
-    # @param dataset_id [String] ID of the dataset this approval type is linked to
-    # @param [Hash] opts the optional parameters
-    # @return [ApprovalType]
-    def post_api_v1_approval_types(weight, name, dataset_id, opts = {})
-      data, _status_code, _headers = post_api_v1_approval_types_with_http_info(weight, name, dataset_id, opts)
-      data
-    end
-
-    # Create a new Approval Type
-    # @param weight [Float] The weight provided by approvals of this type
-    # @param name [String] The name of the approval type
-    # @param dataset_id [String] ID of the dataset this approval type is linked to
-    # @param [Hash] opts the optional parameters
-    # @return [Array<(ApprovalType, Integer, Hash)>] ApprovalType data, response status code and response headers
-    def post_api_v1_approval_types_with_http_info(weight, name, dataset_id, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: ApprovalTypesApi.post_api_v1_approval_types ...'
-      end
-      # verify the required parameter 'weight' is set
-      if @api_client.config.client_side_validation && weight.nil?
-        fail ArgumentError, "Missing the required parameter 'weight' when calling ApprovalTypesApi.post_api_v1_approval_types"
-      end
-      # verify the required parameter 'name' is set
-      if @api_client.config.client_side_validation && name.nil?
-        fail ArgumentError, "Missing the required parameter 'name' when calling ApprovalTypesApi.post_api_v1_approval_types"
-      end
-      # verify the required parameter 'dataset_id' is set
-      if @api_client.config.client_side_validation && dataset_id.nil?
-        fail ArgumentError, "Missing the required parameter 'dataset_id' when calling ApprovalTypesApi.post_api_v1_approval_types"
-      end
-      # resource path
-      local_var_path = '/api/v1/approval_types'
-
-      # query parameters
-      query_params = opts[:query_params] || {}
-
-      # header parameters
-      header_params = opts[:header_params] || {}
-      # HTTP header 'Accept' (if needed)
-      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
-      # HTTP header 'Content-Type'
-      header_params['Content-Type'] = @api_client.select_header_content_type(['application/x-www-form-urlencoded', 'multipart/form-data'])
-
-      # form parameters
-      form_params = opts[:form_params] || {}
-      form_params['weight'] = weight
-      form_params['name'] = name
-      form_params['dataset_id'] = dataset_id
-
-      # http body (model)
-      post_body = opts[:debug_body]
-
-      # return_type
-      return_type = opts[:debug_return_type] || 'ApprovalType'
-
-      # auth_names
-      auth_names = opts[:debug_auth_names] || ['authToken']
-
-      new_options = opts.merge(
-        :operation => :"ApprovalTypesApi.post_api_v1_approval_types",
-        :header_params => header_params,
-        :query_params => query_params,
-        :form_params => form_params,
-        :body => post_body,
-        :auth_names => auth_names,
-        :return_type => return_type
-      )
-
-      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: ApprovalTypesApi#post_api_v1_approval_types\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: ApprovalTypesApi#index_approval_types\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

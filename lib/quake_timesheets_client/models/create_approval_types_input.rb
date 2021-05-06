@@ -14,22 +14,22 @@ require 'date'
 require 'time'
 
 module Quake::Timesheets
-  class Person
-    # The ID of the person
-    attr_accessor :id
-
-    # ID of the dataset this person is linked to
+  class CreateApprovalTypesInput
+    # ID of the dataset this approval type is linked to
     attr_accessor :dataset_id
 
-    # The name of the person
+    # The name of the approval type
     attr_accessor :name
+
+    # The weight provided by approvals of this type
+    attr_accessor :weight
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'id' => :'id',
         :'dataset_id' => :'dataset_id',
-        :'name' => :'name'
+        :'name' => :'name',
+        :'weight' => :'weight'
       }
     end
 
@@ -41,9 +41,9 @@ module Quake::Timesheets
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'id' => :'String',
         :'dataset_id' => :'String',
-        :'name' => :'String'
+        :'name' => :'String',
+        :'weight' => :'Float'
       }
     end
 
@@ -57,20 +57,16 @@ module Quake::Timesheets
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Quake::Timesheets::Person` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Quake::Timesheets::CreateApprovalTypesInput` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Quake::Timesheets::Person`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Quake::Timesheets::CreateApprovalTypesInput`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
-
-      if attributes.key?(:'id')
-        self.id = attributes[:'id']
-      end
 
       if attributes.key?(:'dataset_id')
         self.dataset_id = attributes[:'dataset_id']
@@ -79,16 +75,16 @@ module Quake::Timesheets
       if attributes.key?(:'name')
         self.name = attributes[:'name']
       end
+
+      if attributes.key?(:'weight')
+        self.weight = attributes[:'weight']
+      end
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @id.nil?
-        invalid_properties.push('invalid value for "id", id cannot be nil.')
-      end
-
       if @dataset_id.nil?
         invalid_properties.push('invalid value for "dataset_id", dataset_id cannot be nil.')
       end
@@ -97,15 +93,19 @@ module Quake::Timesheets
         invalid_properties.push('invalid value for "name", name cannot be nil.')
       end
 
+      if @weight.nil?
+        invalid_properties.push('invalid value for "weight", weight cannot be nil.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @id.nil?
       return false if @dataset_id.nil?
       return false if @name.nil?
+      return false if @weight.nil?
       true
     end
 
@@ -114,9 +114,9 @@ module Quake::Timesheets
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          id == o.id &&
           dataset_id == o.dataset_id &&
-          name == o.name
+          name == o.name &&
+          weight == o.weight
     end
 
     # @see the `==` method
@@ -128,7 +128,7 @@ module Quake::Timesheets
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, dataset_id, name].hash
+      [dataset_id, name, weight].hash
     end
 
     # Builds the object from hash

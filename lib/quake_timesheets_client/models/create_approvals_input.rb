@@ -14,22 +14,47 @@ require 'date'
 require 'time'
 
 module Quake::Timesheets
-  class Person
-    # The ID of the person
-    attr_accessor :id
-
-    # ID of the dataset this person is linked to
+  class CreateApprovalsInput
+    # ID of the dataset this approval type is linked to
     attr_accessor :dataset_id
 
-    # The name of the person
-    attr_accessor :name
+    # The ID of the Entry this Approval is linked to
+    attr_accessor :entry_ids
+
+    # The ID of the Approval Type of this Approval
+    attr_accessor :approval_type_id
+
+    attr_accessor :state
+
+    class EnumAttributeValidator
+      attr_reader :datatype
+      attr_reader :allowable_values
+
+      def initialize(datatype, allowable_values)
+        @allowable_values = allowable_values.map do |value|
+          case datatype.to_s
+          when /Integer/i
+            value.to_i
+          when /Float/i
+            value.to_f
+          else
+            value
+          end
+        end
+      end
+
+      def valid?(value)
+        !value || allowable_values.include?(value)
+      end
+    end
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'id' => :'id',
         :'dataset_id' => :'dataset_id',
-        :'name' => :'name'
+        :'entry_ids' => :'entry_ids',
+        :'approval_type_id' => :'approval_type_id',
+        :'state' => :'state'
       }
     end
 
@@ -41,9 +66,10 @@ module Quake::Timesheets
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'id' => :'String',
         :'dataset_id' => :'String',
-        :'name' => :'String'
+        :'entry_ids' => :'Array<String>',
+        :'approval_type_id' => :'String',
+        :'state' => :'String'
       }
     end
 
@@ -57,27 +83,33 @@ module Quake::Timesheets
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Quake::Timesheets::Person` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Quake::Timesheets::CreateApprovalsInput` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Quake::Timesheets::Person`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Quake::Timesheets::CreateApprovalsInput`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
-
-      if attributes.key?(:'id')
-        self.id = attributes[:'id']
-      end
 
       if attributes.key?(:'dataset_id')
         self.dataset_id = attributes[:'dataset_id']
       end
 
-      if attributes.key?(:'name')
-        self.name = attributes[:'name']
+      if attributes.key?(:'entry_ids')
+        if (value = attributes[:'entry_ids']).is_a?(Array)
+          self.entry_ids = value
+        end
+      end
+
+      if attributes.key?(:'approval_type_id')
+        self.approval_type_id = attributes[:'approval_type_id']
+      end
+
+      if attributes.key?(:'state')
+        self.state = attributes[:'state']
       end
     end
 
@@ -85,16 +117,20 @@ module Quake::Timesheets
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @id.nil?
-        invalid_properties.push('invalid value for "id", id cannot be nil.')
-      end
-
       if @dataset_id.nil?
         invalid_properties.push('invalid value for "dataset_id", dataset_id cannot be nil.')
       end
 
-      if @name.nil?
-        invalid_properties.push('invalid value for "name", name cannot be nil.')
+      if @entry_ids.nil?
+        invalid_properties.push('invalid value for "entry_ids", entry_ids cannot be nil.')
+      end
+
+      if @approval_type_id.nil?
+        invalid_properties.push('invalid value for "approval_type_id", approval_type_id cannot be nil.')
+      end
+
+      if @state.nil?
+        invalid_properties.push('invalid value for "state", state cannot be nil.')
       end
 
       invalid_properties
@@ -103,10 +139,23 @@ module Quake::Timesheets
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @id.nil?
       return false if @dataset_id.nil?
-      return false if @name.nil?
+      return false if @entry_ids.nil?
+      return false if @approval_type_id.nil?
+      return false if @state.nil?
+      state_validator = EnumAttributeValidator.new('String', ["requested", "approved", "withdrawn"])
+      return false unless state_validator.valid?(@state)
       true
+    end
+
+    # Custom attribute writer method checking allowed values (enum).
+    # @param [Object] state Object to be assigned
+    def state=(state)
+      validator = EnumAttributeValidator.new('String', ["requested", "approved", "withdrawn"])
+      unless validator.valid?(state)
+        fail ArgumentError, "invalid value for \"state\", must be one of #{validator.allowable_values}."
+      end
+      @state = state
     end
 
     # Checks equality by comparing each attribute.
@@ -114,9 +163,10 @@ module Quake::Timesheets
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          id == o.id &&
           dataset_id == o.dataset_id &&
-          name == o.name
+          entry_ids == o.entry_ids &&
+          approval_type_id == o.approval_type_id &&
+          state == o.state
     end
 
     # @see the `==` method
@@ -128,7 +178,7 @@ module Quake::Timesheets
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, dataset_id, name].hash
+      [dataset_id, entry_ids, approval_type_id, state].hash
     end
 
     # Builds the object from hash

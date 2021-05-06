@@ -1,5 +1,5 @@
 =begin
-#TimesheetsApi (params in:formData)
+#TimesheetsApi (params in:body)
 
 # <p>Another API description</p> 
 
@@ -20,5 +20,5 @@ OpenAPI Generator version: 5.1.0
 end
 
 module Quake::Timesheets
-  VERSION = '0.1.0'
+  VERSION = '0.1.1'
 end

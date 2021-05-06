@@ -1,5 +1,5 @@
 =begin
-#TimesheetsApi (params in:formData)
+#TimesheetsApi (params in:body)
 
 # <p>Another API description</p> 
 
@@ -19,6 +19,65 @@ module Quake::Timesheets
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
     end
+    # Create a new Entry
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreateEntriesInput] :create_entries_input 
+    # @return [Entry]
+    def create_entries(opts = {})
+      data, _status_code, _headers = create_entries_with_http_info(opts)
+      data
+    end
+
+    # Create a new Entry
+    # @param [Hash] opts the optional parameters
+    # @option opts [CreateEntriesInput] :create_entries_input 
+    # @return [Array<(Entry, Integer, Hash)>] Entry data, response status code and response headers
+    def create_entries_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: EntriesApi.create_entries ...'
+      end
+      # resource path
+      local_var_path = '/api/v1/entries'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
+      # HTTP header 'Content-Type'
+      header_params['Content-Type'] = @api_client.select_header_content_type(['application/json'])
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'create_entries_input'])
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'Entry'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['authToken']
+
+      new_options = opts.merge(
+        :operation => :"EntriesApi.create_entries",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: EntriesApi#create_entries\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Search for entries matching filters
     # @param [Hash] opts the optional parameters
     # @option opts [String] :dataset_id Filter to the entries belonging to one of the identified datasets
@@ -26,8 +85,8 @@ module Quake::Timesheets
     # @option opts [String] :from_date Return only entries after this DateTime (inclusive)
     # @option opts [String] :to_date Return only entries before this DateTime (inclusive)
     # @return [Array<Entry>]
-    def get_api_v1_entries(opts = {})
-      data, _status_code, _headers = get_api_v1_entries_with_http_info(opts)
+    def index_entries(opts = {})
+      data, _status_code, _headers = index_entries_with_http_info(opts)
       data
     end
 
@@ -38,9 +97,9 @@ module Quake::Timesheets
     # @option opts [String] :from_date Return only entries after this DateTime (inclusive)
     # @option opts [String] :to_date Return only entries before this DateTime (inclusive)
     # @return [Array<(Array<Entry>, Integer, Hash)>] Array<Entry> data, response status code and response headers
-    def get_api_v1_entries_with_http_info(opts = {})
+    def index_entries_with_http_info(opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: EntriesApi.get_api_v1_entries ...'
+        @api_client.config.logger.debug 'Calling API: EntriesApi.index_entries ...'
       end
       # resource path
       local_var_path = '/api/v1/entries'
@@ -70,7 +129,7 @@ module Quake::Timesheets
       auth_names = opts[:debug_auth_names] || ['authToken']
 
       new_options = opts.merge(
-        :operation => :"EntriesApi.get_api_v1_entries",
+        :operation => :"EntriesApi.index_entries",
         :header_params => header_params,
         :query_params => query_params,
         :form_params => form_params,
@@ -81,86 +140,7 @@ module Quake::Timesheets
 
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: EntriesApi#get_api_v1_entries\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
-      return data, status_code, headers
-    end
-
-    # Create a new Entry
-    # @param [Hash] opts the optional parameters
-    # @option opts [String] :person_id ID of the person to which this entry pertains
-    # @option opts [String] :start_at Time period at which this entry starts
-    # @option opts [String] :end_at Time period at which this entry ends
-    # @option opts [Float] :quantity 
-    # @option opts [String] :unit 
-    # @option opts [String] :external_reference Unique identifier of the activity this Entry relates to
-    # @return [Entry]
-    def post_api_v1_entries(opts = {})
-      data, _status_code, _headers = post_api_v1_entries_with_http_info(opts)
-      data
-    end
-
-    # Create a new Entry
-    # @param [Hash] opts the optional parameters
-    # @option opts [String] :person_id ID of the person to which this entry pertains
-    # @option opts [String] :start_at Time period at which this entry starts
-    # @option opts [String] :end_at Time period at which this entry ends
-    # @option opts [Float] :quantity 
-    # @option opts [String] :unit 
-    # @option opts [String] :external_reference Unique identifier of the activity this Entry relates to
-    # @return [Array<(Entry, Integer, Hash)>] Entry data, response status code and response headers
-    def post_api_v1_entries_with_http_info(opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: EntriesApi.post_api_v1_entries ...'
-      end
-      allowable_values = ["hour", "day", "week", "month", "other"]
-      if @api_client.config.client_side_validation && opts[:'unit'] && !allowable_values.include?(opts[:'unit'])
-        fail ArgumentError, "invalid value for \"unit\", must be one of #{allowable_values}"
-      end
-      # resource path
-      local_var_path = '/api/v1/entries'
-
-      # query parameters
-      query_params = opts[:query_params] || {}
-
-      # header parameters
-      header_params = opts[:header_params] || {}
-      # HTTP header 'Accept' (if needed)
-      header_params['Accept'] = @api_client.select_header_accept(['*/*'])
-      # HTTP header 'Content-Type'
-      header_params['Content-Type'] = @api_client.select_header_content_type(['application/x-www-form-urlencoded', 'multipart/form-data'])
-
-      # form parameters
-      form_params = opts[:form_params] || {}
-      form_params['person_id'] = opts[:'person_id'] if !opts[:'person_id'].nil?
-      form_params['start_at'] = opts[:'start_at'] if !opts[:'start_at'].nil?
-      form_params['end_at'] = opts[:'end_at'] if !opts[:'end_at'].nil?
-      form_params['quantity'] = opts[:'quantity'] if !opts[:'quantity'].nil?
-      form_params['unit'] = opts[:'unit'] if !opts[:'unit'].nil?
-      form_params['external_reference'] = opts[:'external_reference'] if !opts[:'external_reference'].nil?
-
-      # http body (model)
-      post_body = opts[:debug_body]
-
-      # return_type
-      return_type = opts[:debug_return_type] || 'Entry'
-
-      # auth_names
-      auth_names = opts[:debug_auth_names] || ['authToken']
-
-      new_options = opts.merge(
-        :operation => :"EntriesApi.post_api_v1_entries",
-        :header_params => header_params,
-        :query_params => query_params,
-        :form_params => form_params,
-        :body => post_body,
-        :auth_names => auth_names,
-        :return_type => return_type
-      )
-
-      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: EntriesApi#post_api_v1_entries\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: EntriesApi#index_entries\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
@@ -168,39 +148,25 @@ module Quake::Timesheets
     # Update an existing Entry
     # @param id [String] The ID for the Entry
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :person_id ID of the person to which this entry pertains
-    # @option opts [String] :start_at Time period at which this entry starts
-    # @option opts [String] :end_at Time period at which this entry ends
-    # @option opts [Float] :quantity 
-    # @option opts [String] :unit 
-    # @option opts [String] :external_reference Unique identifier of the activity this Entry relates to
+    # @option opts [UpdateEntriesInput] :update_entries_input 
     # @return [Entry]
-    def post_api_v1_entries_id(id, opts = {})
-      data, _status_code, _headers = post_api_v1_entries_id_with_http_info(id, opts)
+    def update_entries(id, opts = {})
+      data, _status_code, _headers = update_entries_with_http_info(id, opts)
       data
     end
 
     # Update an existing Entry
     # @param id [String] The ID for the Entry
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :person_id ID of the person to which this entry pertains
-    # @option opts [String] :start_at Time period at which this entry starts
-    # @option opts [String] :end_at Time period at which this entry ends
-    # @option opts [Float] :quantity 
-    # @option opts [String] :unit 
-    # @option opts [String] :external_reference Unique identifier of the activity this Entry relates to
+    # @option opts [UpdateEntriesInput] :update_entries_input 
     # @return [Array<(Entry, Integer, Hash)>] Entry data, response status code and response headers
-    def post_api_v1_entries_id_with_http_info(id, opts = {})
+    def update_entries_with_http_info(id, opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: EntriesApi.post_api_v1_entries_id ...'
+        @api_client.config.logger.debug 'Calling API: EntriesApi.update_entries ...'
       end
       # verify the required parameter 'id' is set
       if @api_client.config.client_side_validation && id.nil?
-        fail ArgumentError, "Missing the required parameter 'id' when calling EntriesApi.post_api_v1_entries_id"
-      end
-      allowable_values = ["hour", "day", "week", "month", "other"]
-      if @api_client.config.client_side_validation && opts[:'unit'] && !allowable_values.include?(opts[:'unit'])
-        fail ArgumentError, "invalid value for \"unit\", must be one of #{allowable_values}"
+        fail ArgumentError, "Missing the required parameter 'id' when calling EntriesApi.update_entries"
       end
       # resource path
       local_var_path = '/api/v1/entries/{id}'.sub('{' + 'id' + '}', CGI.escape(id.to_s))
@@ -213,19 +179,13 @@ module Quake::Timesheets
       # HTTP header 'Accept' (if needed)
       header_params['Accept'] = @api_client.select_header_accept(['*/*'])
       # HTTP header 'Content-Type'
-      header_params['Content-Type'] = @api_client.select_header_content_type(['application/x-www-form-urlencoded', 'multipart/form-data'])
+      header_params['Content-Type'] = @api_client.select_header_content_type(['application/json'])
 
       # form parameters
       form_params = opts[:form_params] || {}
-      form_params['person_id'] = opts[:'person_id'] if !opts[:'person_id'].nil?
-      form_params['start_at'] = opts[:'start_at'] if !opts[:'start_at'].nil?
-      form_params['end_at'] = opts[:'end_at'] if !opts[:'end_at'].nil?
-      form_params['quantity'] = opts[:'quantity'] if !opts[:'quantity'].nil?
-      form_params['unit'] = opts[:'unit'] if !opts[:'unit'].nil?
-      form_params['external_reference'] = opts[:'external_reference'] if !opts[:'external_reference'].nil?
 
       # http body (model)
-      post_body = opts[:debug_body]
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(opts[:'update_entries_input'])
 
       # return_type
       return_type = opts[:debug_return_type] || 'Entry'
@@ -234,7 +194,7 @@ module Quake::Timesheets
       auth_names = opts[:debug_auth_names] || ['authToken']
 
       new_options = opts.merge(
-        :operation => :"EntriesApi.post_api_v1_entries_id",
+        :operation => :"EntriesApi.update_entries",
         :header_params => header_params,
         :query_params => query_params,
         :form_params => form_params,
@@ -245,7 +205,7 @@ module Quake::Timesheets
 
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: EntriesApi#post_api_v1_entries_id\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: EntriesApi#update_entries\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

@@ -4,18 +4,18 @@ on:
   push:
     branches:
       - "master"
-    tags:
-      - v*
+
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: Release Gem
-        uses: cadwallion/publish-rubygems-action@master
+        uses: discourse/publish-rubygems-action@v2-beta
         env:
-          GITHUB_TOKEN: ${{secrets.BUNDLE_GITHUB__COM}}
-          RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
           RELEASE_COMMAND: rake release
+          GIT_EMAIL: dev_null@quake.co.uk
+          GIT_NAME: Quake SaaS CI

@@ -6,7 +6,7 @@ All URIs are relative to *https://timesheetsapi.svc.lumbry.co.uk:443*
 | ------ | ------------ | ----------- |
 | [**create_entries**](EntriesApi.md#create_entries) | **POST** /api/v1/entries | Create a new Entry |
 | [**index_entries**](EntriesApi.md#index_entries) | **GET** /api/v1/entries | Search for entries matching filters |
-| [**update_entries**](EntriesApi.md#update_entries) | **POST** /api/v1/entries/{id} | Update an existing Entry |
+| [**update_entries**](EntriesApi.md#update_entries) | **PATCH** /api/v1/entries/{id} | Update an existing Entry |
 
 
 ## create_entries

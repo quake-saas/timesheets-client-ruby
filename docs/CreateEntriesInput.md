@@ -10,6 +10,7 @@
 | **quantity** | **Float** |  | [optional] |
 | **unit** | **String** |  | [optional] |
 | **external_reference** | **String** | Unique identifier of the activity this Entry relates to | [optional] |
+| **tags** | **Array&lt;String&gt;** | The Tags attached to this entries. Can take an Array of UUIDs of existing Tags, or any String which will find or create a Tag with that value | [optional] |
 
 ## Example
 
@@ -22,7 +23,8 @@ instance = Quake::Timesheets::CreateEntriesInput.new(
   end_at: null,
   quantity: null,
   unit: null,
-  external_reference: null
+  external_reference: null,
+  tags: null
 )
 ```
 

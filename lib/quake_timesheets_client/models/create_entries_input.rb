@@ -31,6 +31,9 @@ module Quake::Timesheets
     # Unique identifier of the activity this Entry relates to
     attr_accessor :external_reference
 
+    # The Tags attached to this entries. Can take an Array of UUIDs of existing Tags, or any String which will find or create a Tag with that value
+    attr_accessor :tags
+
     class EnumAttributeValidator
       attr_reader :datatype
       attr_reader :allowable_values
@@ -61,7 +64,8 @@ module Quake::Timesheets
         :'end_at' => :'end_at',
         :'quantity' => :'quantity',
         :'unit' => :'unit',
-        :'external_reference' => :'external_reference'
+        :'external_reference' => :'external_reference',
+        :'tags' => :'tags'
       }
     end
 
@@ -78,7 +82,8 @@ module Quake::Timesheets
         :'end_at' => :'String',
         :'quantity' => :'Float',
         :'unit' => :'String',
-        :'external_reference' => :'String'
+        :'external_reference' => :'String',
+        :'tags' => :'Array<String>'
       }
     end
 
@@ -126,6 +131,12 @@ module Quake::Timesheets
       if attributes.key?(:'external_reference')
         self.external_reference = attributes[:'external_reference']
       end
+
+      if attributes.key?(:'tags')
+        if (value = attributes[:'tags']).is_a?(Array)
+          self.tags = value
+        end
+      end
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
@@ -163,7 +174,8 @@ module Quake::Timesheets
           end_at == o.end_at &&
           quantity == o.quantity &&
           unit == o.unit &&
-          external_reference == o.external_reference
+          external_reference == o.external_reference &&
+          tags == o.tags
     end
 
     # @see the `==` method
@@ -175,7 +187,7 @@ module Quake::Timesheets
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [person_id, start_at, end_at, quantity, unit, external_reference].hash
+      [person_id, start_at, end_at, quantity, unit, external_reference, tags].hash
     end
 
     # Builds the object from hash

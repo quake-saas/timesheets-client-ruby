@@ -37,6 +37,9 @@ module Quake::Timesheets
     # Unique identifier of the activity this Entry relates to
     attr_accessor :external_reference
 
+    # The Tags attached to this entry.
+    attr_accessor :tags
+
     # Time at which the record was created
     attr_accessor :created_at
 
@@ -76,6 +79,7 @@ module Quake::Timesheets
         :'quantity' => :'quantity',
         :'unit' => :'unit',
         :'external_reference' => :'external_reference',
+        :'tags' => :'tags',
         :'created_at' => :'created_at',
         :'updated_at' => :'updated_at'
       }
@@ -97,6 +101,7 @@ module Quake::Timesheets
         :'quantity' => :'Float',
         :'unit' => :'String',
         :'external_reference' => :'String',
+        :'tags' => :'Array<String>',
         :'created_at' => :'String',
         :'updated_at' => :'String'
       }
@@ -155,6 +160,12 @@ module Quake::Timesheets
         self.external_reference = attributes[:'external_reference']
       end
 
+      if attributes.key?(:'tags')
+        if (value = attributes[:'tags']).is_a?(Array)
+          self.tags = value
+        end
+      end
+
       if attributes.key?(:'created_at')
         self.created_at = attributes[:'created_at']
       end
@@ -176,6 +187,10 @@ module Quake::Timesheets
         invalid_properties.push('invalid value for "dataset_id", dataset_id cannot be nil.')
       end
 
+      if @tags.nil?
+        invalid_properties.push('invalid value for "tags", tags cannot be nil.')
+      end
+
       if @created_at.nil?
         invalid_properties.push('invalid value for "created_at", created_at cannot be nil.')
       end
@@ -194,6 +209,7 @@ module Quake::Timesheets
       return false if @dataset_id.nil?
       unit_validator = EnumAttributeValidator.new('String', ["hour", "day", "week", "month", "other"])
       return false unless unit_validator.valid?(@unit)
+      return false if @tags.nil?
       return false if @created_at.nil?
       return false if @updated_at.nil?
       true
@@ -222,6 +238,7 @@ module Quake::Timesheets
           quantity == o.quantity &&
           unit == o.unit &&
           external_reference == o.external_reference &&
+          tags == o.tags &&
           created_at == o.created_at &&
           updated_at == o.updated_at
     end
@@ -235,7 +252,7 @@ module Quake::Timesheets
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, dataset_id, person_id, start_at, end_at, quantity, unit, external_reference, created_at, updated_at].hash
+      [id, dataset_id, person_id, start_at, end_at, quantity, unit, external_reference, tags, created_at, updated_at].hash
     end
 
     # Builds the object from hash

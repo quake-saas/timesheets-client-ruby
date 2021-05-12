@@ -8,4 +8,4 @@ script:
   - bundle install --path vendor/bundle
   - bundle exec rspec
   - gem build quake_timesheets_client.gemspec
-  - gem install ./quake_timesheets_client-0.1.5.gem
+  - gem install ./quake_timesheets_client-0.1.6.gem

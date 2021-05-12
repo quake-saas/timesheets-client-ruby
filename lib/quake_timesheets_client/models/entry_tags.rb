@@ -14,71 +14,28 @@ require 'date'
 require 'time'
 
 module Quake::Timesheets
-  class Entry
-    # The ID for the entry
+  class EntryTags
+    # The Tag's ID
     attr_accessor :id
 
-    # ID of the dataset to which this entry is linked
+    # The Tag's value
+    attr_accessor :value
+
+    # The Tag's Dataset ID
     attr_accessor :dataset_id
 
-    # ID of the person to which this entry pertains
-    attr_accessor :person_id
-
-    # Time period at which this entry starts
-    attr_accessor :start_at
-
-    # Time period at which this entry ends
-    attr_accessor :end_at
-
-    attr_accessor :quantity
-
-    attr_accessor :unit
-
-    # Unique identifier of the activity this Entry relates to
-    attr_accessor :external_reference
-
-    attr_accessor :tags
-
-    # Time at which the record was created
+    # The Tag's time of creation
     attr_accessor :created_at
 
-    # Time at which the record was updated
+    # The Tag's time of last modification
     attr_accessor :updated_at
-
-    class EnumAttributeValidator
-      attr_reader :datatype
-      attr_reader :allowable_values
-
-      def initialize(datatype, allowable_values)
-        @allowable_values = allowable_values.map do |value|
-          case datatype.to_s
-          when /Integer/i
-            value.to_i
-          when /Float/i
-            value.to_f
-          else
-            value
-          end
-        end
-      end
-
-      def valid?(value)
-        !value || allowable_values.include?(value)
-      end
-    end
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'id' => :'id',
+        :'value' => :'value',
         :'dataset_id' => :'dataset_id',
-        :'person_id' => :'person_id',
-        :'start_at' => :'start_at',
-        :'end_at' => :'end_at',
-        :'quantity' => :'quantity',
-        :'unit' => :'unit',
-        :'external_reference' => :'external_reference',
-        :'tags' => :'tags',
         :'created_at' => :'created_at',
         :'updated_at' => :'updated_at'
       }
@@ -93,14 +50,8 @@ module Quake::Timesheets
     def self.openapi_types
       {
         :'id' => :'String',
+        :'value' => :'String',
         :'dataset_id' => :'String',
-        :'person_id' => :'String',
-        :'start_at' => :'String',
-        :'end_at' => :'String',
-        :'quantity' => :'Float',
-        :'unit' => :'String',
-        :'external_reference' => :'String',
-        :'tags' => :'Array<EntryTags>',
         :'created_at' => :'String',
         :'updated_at' => :'String'
       }
@@ -116,13 +67,13 @@ module Quake::Timesheets
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Quake::Timesheets::Entry` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Quake::Timesheets::EntryTags` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Quake::Timesheets::Entry`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Quake::Timesheets::EntryTags`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
@@ -131,38 +82,12 @@ module Quake::Timesheets
         self.id = attributes[:'id']
       end
 
+      if attributes.key?(:'value')
+        self.value = attributes[:'value']
+      end
+
       if attributes.key?(:'dataset_id')
         self.dataset_id = attributes[:'dataset_id']
-      end
-
-      if attributes.key?(:'person_id')
-        self.person_id = attributes[:'person_id']
-      end
-
-      if attributes.key?(:'start_at')
-        self.start_at = attributes[:'start_at']
-      end
-
-      if attributes.key?(:'end_at')
-        self.end_at = attributes[:'end_at']
-      end
-
-      if attributes.key?(:'quantity')
-        self.quantity = attributes[:'quantity']
-      end
-
-      if attributes.key?(:'unit')
-        self.unit = attributes[:'unit']
-      end
-
-      if attributes.key?(:'external_reference')
-        self.external_reference = attributes[:'external_reference']
-      end
-
-      if attributes.key?(:'tags')
-        if (value = attributes[:'tags']).is_a?(Array)
-          self.tags = value
-        end
       end
 
       if attributes.key?(:'created_at')
@@ -178,50 +103,13 @@ module Quake::Timesheets
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @id.nil?
-        invalid_properties.push('invalid value for "id", id cannot be nil.')
-      end
-
-      if @dataset_id.nil?
-        invalid_properties.push('invalid value for "dataset_id", dataset_id cannot be nil.')
-      end
-
-      if @tags.nil?
-        invalid_properties.push('invalid value for "tags", tags cannot be nil.')
-      end
-
-      if @created_at.nil?
-        invalid_properties.push('invalid value for "created_at", created_at cannot be nil.')
-      end
-
-      if @updated_at.nil?
-        invalid_properties.push('invalid value for "updated_at", updated_at cannot be nil.')
-      end
-
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @id.nil?
-      return false if @dataset_id.nil?
-      unit_validator = EnumAttributeValidator.new('String', ["hour", "day", "week", "month", "other"])
-      return false unless unit_validator.valid?(@unit)
-      return false if @tags.nil?
-      return false if @created_at.nil?
-      return false if @updated_at.nil?
       true
-    end
-
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] unit Object to be assigned
-    def unit=(unit)
-      validator = EnumAttributeValidator.new('String', ["hour", "day", "week", "month", "other"])
-      unless validator.valid?(unit)
-        fail ArgumentError, "invalid value for \"unit\", must be one of #{validator.allowable_values}."
-      end
-      @unit = unit
     end
 
     # Checks equality by comparing each attribute.
@@ -230,14 +118,8 @@ module Quake::Timesheets
       return true if self.equal?(o)
       self.class == o.class &&
           id == o.id &&
+          value == o.value &&
           dataset_id == o.dataset_id &&
-          person_id == o.person_id &&
-          start_at == o.start_at &&
-          end_at == o.end_at &&
-          quantity == o.quantity &&
-          unit == o.unit &&
-          external_reference == o.external_reference &&
-          tags == o.tags &&
           created_at == o.created_at &&
           updated_at == o.updated_at
     end
@@ -251,7 +133,7 @@ module Quake::Timesheets
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [id, dataset_id, person_id, start_at, end_at, quantity, unit, external_reference, tags, created_at, updated_at].hash
+      [id, value, dataset_id, created_at, updated_at].hash
     end
 
     # Builds the object from hash

@@ -4,7 +4,7 @@ gemHomepage: https://www.quake.co.uk
 gemSummary: A client for the Quake Timesheets API
 gemDescription: Requires the Quake Timesheets system
 gemLicense: MIT
-gemVersion: 0.1.5
+gemVersion: 0.1.6
 gemRequiredRubyVersion: ">= 2.7"
 library: faraday
 moduleName: Quake::Timesheets

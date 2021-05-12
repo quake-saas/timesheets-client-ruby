@@ -12,7 +12,7 @@
 | **quantity** | **Float** |  | [optional] |
 | **unit** | **String** |  | [optional] |
 | **external_reference** | **String** | Unique identifier of the activity this Entry relates to | [optional] |
-| **tags** | **Array&lt;String&gt;** | The Tags attached to this entry. |  |
+| **tags** | [**Array&lt;EntryTags&gt;**](EntryTags.md) |  |  |
 | **created_at** | **String** | Time at which the record was created |  |
 | **updated_at** | **String** | Time at which the record was updated |  |
 

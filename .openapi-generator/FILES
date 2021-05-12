@@ -18,6 +18,7 @@ docs/Dataset.md
 docs/DatasetsApi.md
 docs/EntriesApi.md
 docs/Entry.md
+docs/EntryTags.md
 docs/PeopleApi.md
 docs/Person.md
 docs/UpdateEntriesInput.md
@@ -41,6 +42,7 @@ lib/quake_timesheets_client/models/create_entries_input.rb
 lib/quake_timesheets_client/models/create_people_input.rb
 lib/quake_timesheets_client/models/dataset.rb
 lib/quake_timesheets_client/models/entry.rb
+lib/quake_timesheets_client/models/entry_tags.rb
 lib/quake_timesheets_client/models/person.rb
 lib/quake_timesheets_client/models/update_entries_input.rb
 lib/quake_timesheets_client/version.rb

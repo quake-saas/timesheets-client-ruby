@@ -35,6 +35,7 @@ require 'quake_timesheets_client/models/create_entries_input'
 require 'quake_timesheets_client/models/create_people_input'
 require 'quake_timesheets_client/models/dataset'
 require 'quake_timesheets_client/models/entry'
+require 'quake_timesheets_client/models/entry_tags'
 require 'quake_timesheets_client/models/person'
 require 'quake_timesheets_client/models/update_entries_input'
 

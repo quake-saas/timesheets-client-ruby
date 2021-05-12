@@ -20,5 +20,5 @@ OpenAPI Generator version: 5.1.0
 end
 
 module Quake::Timesheets
-  VERSION = '0.1.5'
+  VERSION = '0.1.6'
 end
